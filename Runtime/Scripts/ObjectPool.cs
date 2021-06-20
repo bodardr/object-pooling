@@ -6,7 +6,7 @@ public class ObjectPool<T> : IObjectPool<T>
 
     public bool Contains(PoolableObject<T> poolableObject) => pool.Contains(poolableObject);
 
-    public void Dispose(PoolableObject<T> disposedObject)
+    public void Retrieve(PoolableObject<T> disposedObject)
     {
         pool.Push(disposedObject);
     }
