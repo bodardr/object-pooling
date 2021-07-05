@@ -6,6 +6,14 @@ public class ObjectPool<T> : IObjectPool<T>
 
     public bool Contains(PoolableObject<T> poolableObject) => pool.Contains(poolableObject);
 
+    public PoolableObject<T> Get()
+    {
+        if (pool.Count > 0)
+            return pool.Pop();
+
+        return null;
+    }
+
     public void Retrieve(PoolableObject<T> disposedObject)
     {
         pool.Push(disposedObject);
