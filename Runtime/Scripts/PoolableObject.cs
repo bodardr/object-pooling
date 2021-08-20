@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PoolableObject<T>
+namespace Bodardr.ObjectPooling
 {
-    private IObjectPool<T> pool;
-
-    public PoolableObject(T content, IObjectPool<T> pool)
+    public class PoolableObject<T> : IPoolableObject
     {
-        Content = content;
-        this.pool = pool;
-    }
+        private readonly IObjectPool<T> pool;
 
-    public T Content { get; }
+        public PoolableObject(T content, IObjectPool<T> pool)
+        {
+            Content = content;
+            this.pool = pool;
+        }
 
-    public Scene ReferencedScene { get; set; }
+        public T Content { get; }
 
-    public virtual void Release()
-    {
-        if (pool.Contains(this))
-            Debug.Log("Object already disposed.");
+        public Scene ReferencedScene { get; set; }
 
-        pool.Retrieve(this);
+        public virtual void Release()
+        {
+            if (pool.Contains(this))
+                Debug.Log("Object already disposed.");
+
+            pool.Retrieve(this);
+        }
     }
 }

@@ -1,21 +1,33 @@
 using System.Collections.Generic;
+using System.Linq;
 
-public class ObjectPool<T> : IObjectPool<T>
+namespace Bodardr.ObjectPooling
 {
-    private Stack<PoolableObject<T>> pool;
-
-    public bool Contains(PoolableObject<T> poolableObject) => pool.Contains(poolableObject);
-
-    public PoolableObject<T> Get()
+    public class ObjectPool<T> : IObjectPool<T>
     {
-        if (pool.Count > 0)
-            return pool.Pop();
+        private Stack<PoolableObject<T>> pool;
 
-        return null;
-    }
+        public bool Contains(PoolableObject<T> poolableObject)
+        {
+            return pool.Contains(poolableObject);
+        }
 
-    public void Retrieve(PoolableObject<T> disposedObject)
-    {
-        pool.Push(disposedObject);
+        public bool Contains(T poolableObject)
+        {
+            return pool.Any(x => x.Content.Equals(poolableObject));
+        }
+
+        public PoolableObject<T> Get()
+        {
+            if (pool.Count > 0)
+                return pool.Pop();
+
+            return null;
+        }
+
+        public void Retrieve(PoolableObject<T> disposedObject)
+        {
+            pool.Push(disposedObject);
+        }
     }
 }
