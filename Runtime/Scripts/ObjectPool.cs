@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Bodardr.ObjectPooling
 {
-    public class ObjectPool<T> : IObjectPool<T>
+    public class ObjectPool<T> : IObjectPool<T>, IObjectPoolGet<T>
     {
         private Stack<PoolableObject<T>> pool;
 

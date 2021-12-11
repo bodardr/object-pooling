@@ -9,8 +9,7 @@ namespace Bodardr.ObjectPooling
 
         public Scene ReferencedScene { get; set; }
         public T Content { get; set; }
-
-
+        
         public PoolableComponent(T content, PoolableObject<GameObject> gameObject)
         {
             Content = content;

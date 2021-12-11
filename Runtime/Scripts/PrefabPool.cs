@@ -53,23 +53,33 @@ namespace Bodardr.ObjectPooling
                 element.Release();
         }
 
-        public PoolableObject<GameObject> Get()
+        public PoolableObject<GameObject> Get(Transform parent = null)
         {
-            if (pool == null)
+            if (pool == null || pool.Count < 1 || pool.Peek().Content == null)
                 InstantiatePool();
 
+            PoolableObject<GameObject> gameObject;
+            
             if (pool.Count == 0)
             {
                 Debug.Log("Pool base exceeded, consider increasing the pool.");
-                return InstantiateSingleObject();
+                gameObject = InstantiateSingleObject();
+            }
+            else
+            {
+                gameObject =  pool.Pop();
             }
 
-            return pool.Pop();
+            gameObject.Content.transform.SetParent(parent, true);
+            gameObject.Content.SetActive(true);
+            return gameObject;
         }
 
-        public PoolableComponent<T> Get<T>() where T : Component
+        public PoolableComponent<T> Get<T>(Transform parent = null) where T : Component
         {
             var poolableObject = Get();
+            poolableObject.Content.transform.SetParent(parent);
+            
             return new PoolableComponent<T>(poolableObject.Content.GetComponent<T>(), poolableObject);
         }
 
@@ -85,7 +95,7 @@ namespace Bodardr.ObjectPooling
             }
             else
             {
-                go = pool.Pop();
+                go = Get();
             }
 
             return go.Content.GetComponent<T>();
