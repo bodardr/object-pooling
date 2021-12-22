@@ -31,6 +31,7 @@ namespace Bodardr.ObjectPooling
 
         public virtual void Retrieve(PoolableObject<GameObject> poolable)
         {
+            poolable.Content.SetActive(false);
             pool.Push(poolable);
         }
 
@@ -75,9 +76,45 @@ namespace Bodardr.ObjectPooling
             return gameObject;
         }
 
+        public PoolableObject<GameObject> Get(Vector3 position)
+        {
+            var poolableObject = Get();
+
+            var tr = poolableObject.Content.transform;
+            tr.position = position;
+
+            return poolableObject;
+        }
+
+        public PoolableObject<GameObject> Get(Vector3 position, Quaternion rotation)
+        {
+            var poolableObject = Get();
+            
+            var tr = poolableObject.Content.transform;
+            tr.SetPositionAndRotation(position, rotation);
+            
+            return poolableObject;
+        }
+
         public PoolableComponent<T> Get<T>(Transform parent = null) where T : Component
         {
             var poolableObject = Get();
+            poolableObject.Content.transform.SetParent(parent);
+            
+            return new PoolableComponent<T>(poolableObject.Content.GetComponent<T>(), poolableObject);
+        }
+
+        public PoolableComponent<T> Get<T>(Vector3 position) where T : Component
+        {
+            var poolableObject = Get();
+            poolableObject.Content.transform.position = position;
+            
+            return new PoolableComponent<T>(poolableObject.Content.GetComponent<T>(), poolableObject);
+        }
+
+        public PoolableComponent<T> Get<T>(Vector3 position, Quaternion rotation, Transform parent = null) where T : Component
+        {
+            var poolableObject = Get(position, rotation);
             poolableObject.Content.transform.SetParent(parent);
             
             return new PoolableComponent<T>(poolableObject.Content.GetComponent<T>(), poolableObject);
