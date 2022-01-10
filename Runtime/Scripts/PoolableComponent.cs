@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Bodardr.ObjectPooling
 {
-    public class PoolableComponent<T> : IPoolableObject where T : Component
+    public class PoolableComponent<T> : IPoolableObject
     {
         private readonly PoolableObject<GameObject> gameObject;
 

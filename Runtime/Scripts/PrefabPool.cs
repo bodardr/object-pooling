@@ -8,13 +8,17 @@ namespace Bodardr.ObjectPooling
     [CreateAssetMenu(fileName = "Prefab Pool", menuName = "Object Pool/Prefab")]
     public class PrefabPool : ScriptableObject, IObjectPool<GameObject>
     {
+        private Stack<PoolableObject<GameObject>> pool;
+
         [SerializeField]
         protected GameObject prefab;
 
         [SerializeField]
         protected int baseInstantiation = 10;
 
-        private Stack<PoolableObject<GameObject>> pool;
+        public GameObject Prefab => prefab;
+
+        public int BaseInstantiation => baseInstantiation;
 
         protected void OnEnable()
         {
@@ -31,6 +35,9 @@ namespace Bodardr.ObjectPooling
 
         public virtual void Retrieve(PoolableObject<GameObject> poolable)
         {
+            if (poolable == null || poolable.Content == null)
+                return;
+            
             poolable.Content.SetActive(false);
             pool.Push(poolable);
         }
@@ -71,7 +78,7 @@ namespace Bodardr.ObjectPooling
                 gameObject =  pool.Pop();
             }
 
-            gameObject.Content.transform.SetParent(parent, true);
+            gameObject.Content.transform.SetParent(parent);
             gameObject.Content.SetActive(true);
             return gameObject;
         }
@@ -96,11 +103,10 @@ namespace Bodardr.ObjectPooling
             return poolableObject;
         }
 
-        public PoolableComponent<T> Get<T>(Transform parent = null) where T : Component
+        public PoolableComponent<T> Get<T>(Transform parent = null)
         {
-            var poolableObject = Get();
-            poolableObject.Content.transform.SetParent(parent);
-            
+            var poolableObject = Get(parent);
+
             return new PoolableComponent<T>(poolableObject.Content.GetComponent<T>(), poolableObject);
         }
 
