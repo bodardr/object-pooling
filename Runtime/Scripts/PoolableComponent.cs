@@ -7,14 +7,15 @@ namespace Bodardr.ObjectPooling
     {
         private readonly PoolableObject<GameObject> gameObject;
 
-        public Scene ReferencedScene { get; set; }
-        public T Content { get; set; }
-        
-        public PoolableComponent(T content, PoolableObject<GameObject> gameObject)
+        public PoolableComponent(PoolableObject<GameObject> gameObject)
         {
-            Content = content;
+            Content = gameObject.Content.GetComponent<T>();
             this.gameObject = gameObject;
         }
+
+        public T Content { get; set; }
+
+        public Scene ReferencedScene { get; set; }
 
         public void Release()
         {

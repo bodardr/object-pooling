@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 namespace Bodardr.ObjectPooling
 {
-    public class PoolableObject<T> : IPoolableObject
+    public class PoolableObject<T> : IPoolableObject where T : Object
     {
-        private readonly IObjectPool<T> pool;
+        private readonly IPool<PoolableObject<T>> pool;
 
-        public PoolableObject(T content, IObjectPool<T> pool)
+        public PoolableObject(T content, IPool<PoolableObject<T>> pool)
         {
             Content = content;
             this.pool = pool;
