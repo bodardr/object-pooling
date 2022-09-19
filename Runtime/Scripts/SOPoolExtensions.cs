@@ -23,7 +23,12 @@ namespace Bodardr.ObjectPooling
             Transform parent = null) where T : Component
         {
             var poolableObject = pool.Get(position, rotation);
+
+            if (!parent)
+                return new PoolableComponent<T>(poolableObject);
+
             poolableObject.Content.transform.SetParent(parent);
+            poolableObject.Content.transform.localPosition = Vector3.zero;
 
             return new PoolableComponent<T>(poolableObject);
         }

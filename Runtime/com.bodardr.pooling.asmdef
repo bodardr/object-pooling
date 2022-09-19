@@ -1,7 +1,9 @@
 {
   "name": "com.bodardr.pooling",
   "rootNamespace": "Bodardr.ObjectPooling",
-  "references": [],
+  "references": [
+    "GUID:dfa5bdae33c0268409f5ee0a9325e3cb"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

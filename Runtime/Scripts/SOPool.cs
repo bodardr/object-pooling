@@ -20,21 +20,38 @@ namespace Bodardr.ObjectPooling
         {
             InstantiatePool();
 
-            SceneManager.sceneUnloaded += OnSceneChanged;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         protected void OnDisable()
         {
             DestroyPool();
 
-            SceneManager.sceneUnloaded -= OnSceneChanged;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
         public bool Contains(PoolableObject<GameObject> poolable) => pool.Any(x => x == poolable);
 
+        /// <summary>
+        /// <b>DO NOT CALL DIRECTLY. You might be looking for PoolableObject's <see cref="PoolableObject{T}.Release"/> instead</b>
+        /// Called by <see cref="PoolableObject{T}.Release"/> so it may be reinserted into the pool.
+        /// </summary>
+        /// <param name="poolable"></param>
+        public virtual void Retrieve(PoolableObject<GameObject> poolable)
+        {
+            if (poolable == null || !poolable.Content)
+            {
+                Debug.LogWarning("The poolable is null or its content is missing.");
+                return;
+            }
+
+            poolable.Content.SetActive(false);
+            pool.Push(poolable);
+        }
+
         public virtual PoolableObject<GameObject> Get()
         {
-            if (pool == null || pool.Count < 1)
+            if (pool == null || pool.Count < 1 || !pool.Peek().Content)
                 InstantiatePool();
 
             PoolableObject<GameObject> gameObject;
@@ -47,24 +64,13 @@ namespace Bodardr.ObjectPooling
             else
             {
                 gameObject = pool.Pop();
+                gameObject.ReferencedScene = SceneManager.GetActiveScene();
             }
 
             return gameObject;
         }
 
-        void IPool<PoolableObject<GameObject>>.Retrieve(PoolableObject<GameObject> poolable)
-        {
-            if (poolable == null || !poolable.Content)
-            {
-                Debug.LogWarning("The poolable is null or its content is missing.");
-                return;
-            }
-
-            poolable.Content.SetActive(false);
-            pool.Push(poolable);
-        }
-
-        private void OnSceneChanged(Scene unloadedScene)
+        private void OnSceneUnloaded(Scene unloadedScene)
         {
             if (pool == null)
                 return;
@@ -73,12 +79,17 @@ namespace Bodardr.ObjectPooling
                 element.Release();
         }
 
-        public PoolableObject<GameObject> Get(Transform parent)
+        public PoolableObject<GameObject> Get(Transform parent, bool resetLocalPosition = true)
         {
             var gameObject = Get();
 
             if (parent)
+            {
                 gameObject.Content.transform.SetParent(parent);
+
+                if (resetLocalPosition)
+                    gameObject.Content.transform.localPosition = Vector3.zero;
+            }
 
             gameObject.Content.SetActive(true);
             return gameObject;
@@ -100,10 +111,13 @@ namespace Bodardr.ObjectPooling
 
         protected virtual void InstantiatePool()
         {
+#if UNITY_EDITOR
             if (!Application.isPlaying)
                 return;
+#endif
 
-            pool = new Stack<PoolableObject<GameObject>>();
+            pool?.Clear();
+            pool ??= new Stack<PoolableObject<GameObject>>();
 
             for (var i = 0; i < baseInstantiation; i++)
                 pool.Push(InstantiateSingleObject(i));

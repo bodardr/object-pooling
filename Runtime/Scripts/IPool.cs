@@ -4,6 +4,6 @@
     {
         public bool Contains(T poolable);
         public T Get();
-        internal void Retrieve(T poolable);
+        public void Retrieve(T poolable);
     }
 }
