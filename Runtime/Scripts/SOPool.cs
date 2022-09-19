@@ -41,11 +41,10 @@ namespace Bodardr.ObjectPooling
         {
             if (poolable == null || !poolable.Content)
             {
-                Debug.LogWarning("The poolable is null or its content is missing.");
+                Debug.LogWarning("The poolable is null.");
                 return;
             }
 
-            poolable.Content.SetActive(false);
             pool.Push(poolable);
         }
 
@@ -67,6 +66,7 @@ namespace Bodardr.ObjectPooling
                 gameObject.ReferencedScene = SceneManager.GetActiveScene();
             }
 
+            gameObject.Content.SetActive(true);
             return gameObject;
         }
 

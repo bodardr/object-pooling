@@ -56,7 +56,7 @@ namespace Bodardr.ObjectPooling
 
         public override void Retrieve(PoolableObject<GameObject> poolable)
         {
-            if (waitForEmissionBeforeDisabling)
+            if (waitForEmissionBeforeDisabling && poolable.Content && poolable.Content.activeInHierarchy)
             {
                 if (!poolable.Content.TryGetComponent(out ParticleSystemDelayBehavior mono))
                     mono = poolable.Content.AddComponent<ParticleSystemDelayBehavior>();
