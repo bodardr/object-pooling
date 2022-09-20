@@ -146,7 +146,7 @@ namespace Bodardr.ObjectPooling
                 if (!Application.isPlaying)
                     DestroyImmediate(poolableGameObject.Content);
 #else
-            Destroy(element.Content);
+            Destroy(poolableGameObject.Content);
 #endif
             }
 
