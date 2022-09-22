@@ -45,6 +45,7 @@ namespace Bodardr.ObjectPooling
                 return;
             }
 
+            poolable.Content.SetActive(false);
             pool.Push(poolable);
         }
 
