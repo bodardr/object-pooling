@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Bodardr.ObjectPooling
 {
     [CreateAssetMenu(fileName = "New Scriptable Object Pool", menuName = "Pool/Prefab")]
-    public class SOPool : ScriptableObject, IPool<PoolableObject<GameObject>>
+    public class ScriptableObjectPool : ScriptableObject, IPool<PoolableObject<GameObject>>
     {
         [SerializeField]
         protected GameObject prefab;

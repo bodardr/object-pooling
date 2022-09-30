@@ -4,14 +4,14 @@ namespace Bodardr.ObjectPooling
 {
     public static class SOPoolExtensions
     {
-        public static PoolableComponent<T> Get<T>(this SOPool pool, Transform parent = null)
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Transform parent = null)
         {
             var poolableObject = pool.Get(parent);
 
             return new PoolableComponent<T>(poolableObject);
         }
 
-        public static PoolableComponent<T> Get<T>(this SOPool pool, Vector3 position) where T : Component
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Vector3 position) where T : Component
         {
             var poolableObject = pool.Get(position);
             poolableObject.Content.transform.position = position;
@@ -19,7 +19,7 @@ namespace Bodardr.ObjectPooling
             return new PoolableComponent<T>(poolableObject);
         }
 
-        public static PoolableComponent<T> Get<T>(this SOPool pool, Vector3 position, Quaternion rotation,
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Vector3 position, Quaternion rotation,
             Transform parent = null) where T : Component
         {
             var poolableObject = pool.Get(position, rotation);

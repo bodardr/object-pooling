@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Bodardr.ObjectPooling
 {
     [CreateAssetMenu(fileName = "Particle System Pool", menuName = "Pool/Particle System Prefab")]
-    public class ParticleSystemSOPool : SOPool
+    public class ParticleSystemScriptableObjectPool : ScriptableObjectPool
     {
         [Tooltip("When Release is called, the object usually disables immediately. " +
                  "If set to true, the pool will wait until the particles have finished emitting before disabling it.")]
