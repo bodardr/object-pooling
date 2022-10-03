@@ -2,7 +2,7 @@
 
 namespace Bodardr.ObjectPooling
 {
-    public static class SOPoolExtensions
+    public static class ScriptableObjectPoolExtensions
     {
         public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Transform parent = null)
         {
