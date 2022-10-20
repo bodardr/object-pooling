@@ -44,6 +44,11 @@ namespace Bodardr.ObjectPooling
 
         protected override void InstantiatePool()
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                return;
+#endif
+
             particleSystems = new Dictionary<GameObject, ParticleSystem>();
             base.InstantiatePool();
         }
