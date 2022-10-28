@@ -76,7 +76,9 @@ namespace Bodardr.ObjectPooling
             if (pool == null)
                 return;
 
-            foreach (var element in pool.Where(element => element.ReferencedScene == unloadedScene))
+            //We sample a copy to suppress collection modification errors.
+            var poolCopy = pool.ToList();
+            foreach (var element in poolCopy.Where(element => element.ReferencedScene == unloadedScene))
                 element.Release();
         }
 
