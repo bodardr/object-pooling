@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Bodardr.UI.Runtime;
+using Bodardr.Utility.Runtime;
 using UnityEngine;
 
 namespace Bodardr.ObjectPooling
