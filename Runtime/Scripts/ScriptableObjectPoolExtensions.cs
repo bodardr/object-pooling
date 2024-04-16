@@ -4,25 +4,25 @@ namespace Bodardr.ObjectPooling
 {
     public static class ScriptableObjectPoolExtensions
     {
-        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Transform parent = null)
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPrefabPool prefabPool, Transform parent = null)
         {
-            var poolableObject = pool.Get(parent);
+            var poolableObject = prefabPool.Get(parent);
 
             return new PoolableComponent<T>(poolableObject);
         }
 
-        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Vector3 position) where T : Component
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPrefabPool prefabPool, Vector3 position) where T : Component
         {
-            var poolableObject = pool.Get(position);
+            var poolableObject = prefabPool.Get(position);
             poolableObject.Content.transform.position = position;
 
             return new PoolableComponent<T>(poolableObject);
         }
 
-        public static PoolableComponent<T> Get<T>(this ScriptableObjectPool pool, Vector3 position, Quaternion rotation,
+        public static PoolableComponent<T> Get<T>(this ScriptableObjectPrefabPool prefabPool, Vector3 position, Quaternion rotation,
             Transform parent = null) where T : Component
         {
-            var poolableObject = pool.Get(position, rotation);
+            var poolableObject = prefabPool.Get(position, rotation);
 
             if (!parent)
                 return new PoolableComponent<T>(poolableObject);

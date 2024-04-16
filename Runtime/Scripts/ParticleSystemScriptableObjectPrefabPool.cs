@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 namespace Bodardr.ObjectPooling
 {
     [CreateAssetMenu(fileName = "Particle System Pool", menuName = "Pool/Particle System Prefab")]
-    public class ParticleSystemScriptableObjectPool : ScriptableObjectPool
+    public class ParticleSystemScriptableObjectPrefabPool : ScriptableObjectPrefabPool
     {
         public enum RetrieveStrategy
         {
